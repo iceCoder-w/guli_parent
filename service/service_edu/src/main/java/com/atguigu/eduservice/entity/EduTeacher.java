@@ -29,7 +29,7 @@ public class EduTeacher implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "讲师ID")
-    @TableId(value = "id", type = IdType.ID_WORKER_STR)
+    @TableId(value = "id", type = IdType.ID_WORKER_STR) // Mybatis-plus自动生成讲师ID，也可以生成UUID
     private String id;
 
     @ApiModelProperty(value = "讲师姓名")
