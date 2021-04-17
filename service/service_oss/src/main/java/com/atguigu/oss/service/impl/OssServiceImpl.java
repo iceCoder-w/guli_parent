@@ -4,11 +4,13 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.atguigu.oss.service.OssService;
 import com.atguigu.oss.utils.ConstantPropertiesUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * @author 王冰炜
@@ -36,6 +38,14 @@ public class OssServiceImpl implements OssService {
             InputStream inputStream = file.getInputStream();
             String filename = file.getOriginalFilename();
 
+            // 解决同名文件被覆盖问题
+            // 1.在文件名中添加唯一随机值
+            String uuid = UUID.randomUUID().toString().replaceAll("-","");
+            filename = uuid + filename;
+            // 2.文件按照日期进行分类
+            String dataPath = new DateTime().toString("yyyy/MM/dd");
+            filename = dataPath + "/" + filename;
+
             // 填写Bucket名称和Object完整路径。Object完整路径中不能包含Bucket名称。
             ossClient.putObject(bucketName, filename, inputStream);
 
@@ -43,8 +53,7 @@ public class OssServiceImpl implements OssService {
             ossClient.shutdown();
             inputStream.close();
 
-            String url = "https://"+bucketName+"."+endpoint+"/"+filename;
-            return url;
+            return "https://"+bucketName+"."+endpoint+"/"+filename;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
