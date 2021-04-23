@@ -31,8 +31,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         EduCourse eduCourse = new EduCourse();
         BeanUtils.copyProperties(courseInfoVo,eduCourse);
 
-        eduCourse.setSubjectParentId("1384841200295030785"); // ??? 后续需要删掉
-
         int insert = baseMapper.insert(eduCourse); // baseMapper只能操作一个数据源
         if (0 == insert){
             throw new GuliException(20001,"添加课程信息失败");
