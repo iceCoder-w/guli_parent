@@ -15,8 +15,11 @@ public class CourseInfoVo {
     @ApiModelProperty(value = "课程ID")
     private String id;
 
-    @ApiModelProperty(value = "课程讲师ID")
+    @ApiModelProperty(value = "课程讲师ID（二级分类）")
     private String teacherId;
+
+    @ApiModelProperty(value = "课程专业父级ID（一级分类）")
+    private String subjectParentId;
 
     @ApiModelProperty(value = "课程专业ID")
     private String subjectId;
