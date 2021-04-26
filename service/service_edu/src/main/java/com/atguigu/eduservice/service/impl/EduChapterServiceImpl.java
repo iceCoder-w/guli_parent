@@ -36,11 +36,13 @@ public class EduChapterServiceImpl extends ServiceImpl<EduChapterMapper, EduChap
         // 1.根据id查chapter章节
         QueryWrapper<EduChapter> wrapperChapter = new QueryWrapper<>();
         wrapperChapter.eq("course_id",courseId);
+//        wrapperChapter.orderByDesc("sort","id");
         List<EduChapter> eduChapterList = baseMapper.selectList(wrapperChapter);
 
         // 2.根据id查video小节
         QueryWrapper<EduVideo> wrapperVideo = new QueryWrapper<>();
         wrapperVideo.eq("course_id",courseId);
+//        wrapperVideo.orderByDesc("sort","id");
         List<EduVideo> eduVideoList = videoService.list(wrapperVideo);
 
         // 创建最终封装数据的list集合

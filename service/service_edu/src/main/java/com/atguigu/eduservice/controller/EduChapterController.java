@@ -37,15 +37,5 @@ public class EduChapterController {
         List<ChapterVo> list = chapterService.getChapterVideoById(courseId);
         return R.ok().data("allChapterVideo",list);
     }
-
-    /**
-     * @ApiOperation(value = "所有讲师列表")
-     *     @GetMapping("findAll")
-     *     public R findAllTeacher(){
-     *         List<EduTeacher> list = eduTeacherService.list(null);
-     *         return R.ok().data("items",list);
-     *     }
-     */
-
 }
 

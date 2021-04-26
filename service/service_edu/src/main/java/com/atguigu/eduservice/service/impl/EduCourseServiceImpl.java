@@ -25,6 +25,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Autowired
     private EduCourseDescriptionService courseDescriptionService;
 
+    // 添加课程基本信息
     @Override
     public String saveCourseInfo(CourseInfoVo courseInfoVo) {
         // 1.向课程表添加课程基本信息
@@ -46,5 +47,21 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         boolean save = courseDescriptionService.save(courseDescription);
 
         return cid;
+    }
+
+    // 根据课程id查询课程基本信息
+    @Override
+    public CourseInfoVo getCourseInfo(String courseId) {
+
+        CourseInfoVo courseInfoVo = new CourseInfoVo();
+
+        // 1.查询课程EduCourse基本信息
+        EduCourse eduCourse = baseMapper.selectById(courseId);
+        BeanUtils.copyProperties(eduCourse,courseInfoVo);
+        // 2.查询课程EduCourseDescription描述信息
+        EduCourseDescription courseDescription = courseDescriptionService.getById(courseId);
+        courseInfoVo.setDescription(courseDescription.getDescription());
+
+        return courseInfoVo;
     }
 }
