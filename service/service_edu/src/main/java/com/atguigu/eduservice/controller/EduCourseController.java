@@ -42,5 +42,12 @@ public class EduCourseController {
         return R.ok().data("courseInfoVo",courseInfoVo);
     }
 
+    // 修改课程基本信息
+    @ApiOperation(value = "修改课程基本信息")
+    @GetMapping("updateCourseInfo")
+    public R updateCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
+        courseService.updateCourseInfo(courseInfoVo);
+        return R.ok();
+    }
 }
 
