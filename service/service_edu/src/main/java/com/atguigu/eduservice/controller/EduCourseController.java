@@ -2,6 +2,7 @@ package com.atguigu.eduservice.controller;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
+import com.atguigu.eduservice.entity.vo.CoursePublishVo;
 import com.atguigu.eduservice.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,6 +49,14 @@ public class EduCourseController {
     public R updateCourseInfo(@RequestBody CourseInfoVo courseInfoVo){
         courseService.updateCourseInfo(courseInfoVo);
         return R.ok();
+    }
+
+    // 根据课程id查询课程确认信息
+    @ApiOperation(value = "根据课程id查询课程确认信息")
+    @GetMapping("getPublishCourseInfo/{courseId}")
+    public R getPublishCourseInfo(@PathVariable String courseId){
+        CoursePublishVo coursePublishVo = courseService.publishCourseInfo(courseId);
+        return R.ok().data("publishCourse",coursePublishVo);
     }
 }
 
