@@ -4,6 +4,7 @@ package com.atguigu.eduservice.controller;
 import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduVideo;
 import com.atguigu.eduservice.service.EduVideoService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2021-04-22
  */
 
+@Api(tags = "小节管理")
 @RestController
 @RequestMapping("/eduservice/video")
 @CrossOrigin
@@ -47,7 +49,22 @@ public class EduVideoController {
         }
     }
 
-    // 修改小节
+    // 根据id查询小节
+    @GetMapping("getVideoInfo/{videoId}")
+    public R getVideoInfo(@PathVariable String videoId){
+        EduVideo video = videoService.getById(videoId);
+        return R.ok().data("video",video);
+    }
 
+    // 修改小节
+    @PostMapping("updateVideo")
+    public R updateVideo(@RequestBody EduVideo eduVideo){
+        boolean update = videoService.updateById(eduVideo);
+        if (update){
+            return R.ok();
+        }else {
+            return R.error();
+        }
+    }
 }
 
