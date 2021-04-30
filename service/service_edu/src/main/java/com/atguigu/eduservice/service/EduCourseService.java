@@ -28,4 +28,7 @@ public interface EduCourseService extends IService<EduCourse> {
 
     // 分页查询课程列表
     void pageQuery(Page<EduCourse> pageParam, CourseQuery courseQuery);
+
+    // 根据ID删除课程
+    boolean removeCourseById(String id);
 }

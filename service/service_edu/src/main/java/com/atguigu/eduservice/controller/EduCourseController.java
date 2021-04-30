@@ -99,5 +99,20 @@ public class EduCourseController {
 
         return  R.ok().data("total", total).data("rows", records);
     }
+
+    // 根据ID删除课程
+    @ApiOperation(value = "根据ID删除课程")
+    @DeleteMapping("removeById/{id}")
+    public R removeById(
+            @ApiParam(name = "id", value = "课程ID", required = true)
+            @PathVariable String id){
+
+        boolean result = courseService.removeCourseById(id);
+        if(result){
+            return R.ok();
+        }else{
+            return R.error().message("删除失败");
+        }
+    }
 }
 
