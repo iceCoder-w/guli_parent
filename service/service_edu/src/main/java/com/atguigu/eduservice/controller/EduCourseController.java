@@ -4,11 +4,16 @@ import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CoursePublishVo;
+import com.atguigu.eduservice.entity.vo.CourseQuery;
 import com.atguigu.eduservice.service.EduCourseService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -70,6 +75,29 @@ public class EduCourseController {
         eduCourse.setStatus("Normal");
         courseService.updateById(eduCourse);
         return R.ok();
+    }
+
+    // 分页查询课程列表
+    @ApiOperation(value = "分页查询课程列表")
+    @GetMapping("pageCourseCondition/{page}/{limit}")
+    public R pageQuery(
+            @ApiParam(name = "page", value = "当前页码", required = true)
+            @PathVariable Long page,
+
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit,
+
+            @ApiParam(name = "courseQuery", value = "查询对象", required = false)
+                    CourseQuery courseQuery){
+
+        Page<EduCourse> pageCourse = new Page<>(page, limit);
+
+        courseService.pageQuery(pageCourse, courseQuery);
+        List<EduCourse> records = pageCourse.getRecords();
+
+        long total = pageCourse.getTotal();
+
+        return  R.ok().data("total", total).data("rows", records);
     }
 }
 
