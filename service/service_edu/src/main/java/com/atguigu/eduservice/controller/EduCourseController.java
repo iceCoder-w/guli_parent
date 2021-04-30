@@ -1,6 +1,7 @@
 package com.atguigu.eduservice.controller;
 
 import com.atguigu.commonutils.R;
+import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CoursePublishVo;
 import com.atguigu.eduservice.service.EduCourseService;
@@ -57,6 +58,18 @@ public class EduCourseController {
     public R getPublishCourseInfo(@PathVariable String courseId){
         CoursePublishVo coursePublishVo = courseService.publishCourseInfo(courseId);
         return R.ok().data("publishCourse",coursePublishVo);
+    }
+
+    // 课程最终发布
+    // 修改课程状态（变为发布）
+    @ApiOperation(value = "修改课程状态（变为发布）")
+    @PostMapping("publishCourse/{courseId}")
+    public R publishCourse(@PathVariable String courseId){
+        EduCourse eduCourse = new EduCourse();
+        eduCourse.setId(courseId);
+        eduCourse.setStatus("Normal");
+        courseService.updateById(eduCourse);
+        return R.ok();
     }
 }
 
