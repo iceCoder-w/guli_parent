@@ -1,0 +1,19 @@
+package com.atguigu.eduservice.client;
+
+import com.atguigu.commonutils.R;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+/**
+ * @author 王冰炜
+ * @create 2021-05-04 15:39
+ */
+
+@FeignClient("service-vod")
+@Component
+public interface VodClient {
+    @DeleteMapping(value = "/eduvod/video/removeAliyunVideo/{videoId}")
+    public R removeAliyunVideo(@PathVariable("videoId") String videoId);
+}
