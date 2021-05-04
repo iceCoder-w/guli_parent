@@ -14,7 +14,7 @@ import java.util.List;
  * @create 2021-05-04 15:39
  */
 
-@FeignClient("service-vod")
+@FeignClient(name = "service-vod", fallback = VodFileDegradeFeignClient.class)
 @Component
 public interface VodClient {
     @DeleteMapping(value = "/eduvod/video/removeAliyunVideo/{videoId}")
