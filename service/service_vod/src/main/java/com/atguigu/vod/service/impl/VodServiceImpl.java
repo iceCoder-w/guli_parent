@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author 王冰炜
@@ -71,6 +72,30 @@ public class VodServiceImpl implements VodService {
             DeleteVideoRequest request = new DeleteVideoRequest();
             request.setVideoIds(videoId);
 
+            DeleteVideoResponse response = client.getAcsResponse(request);
+            System.out.print("根据视频id删除视频，RequestId = " + response.getRequestId() + "\n");
+        } catch (ClientException e){
+            throw new GuliException(20001, "删除视频失败");
+        }
+    }
+
+    // 删除多个阿里云视频
+    @Override
+    public void removeVideoList(List videoIdList) {
+        try {
+            //初始化
+            DefaultAcsClient client = InitVodClient.initVodClient(
+                    ConstantPropertiesUtil.ACCESS_KEY_ID,
+                    ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+
+            //一次只能批量删20个
+            String str = org.apache.commons.lang.StringUtils.join(videoIdList.toArray(), ",");
+
+            //创建请求对象
+            DeleteVideoRequest request = new DeleteVideoRequest();
+            request.setVideoIds(str);
+
+            //获取响应
             DeleteVideoResponse response = client.getAcsResponse(request);
             System.out.print("根据视频id删除视频，RequestId = " + response.getRequestId() + "\n");
         } catch (ClientException e){
