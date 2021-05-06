@@ -20,7 +20,7 @@ import java.util.List;
 public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner> implements CrmBannerService {
     // 获取首页banner
     @Override
-    public List<CrmBanner> selectIndexList() {
+    public List<CrmBanner> selectAllList() {
         List<CrmBanner> list = baseMapper.selectList(null);
         return list;
     }

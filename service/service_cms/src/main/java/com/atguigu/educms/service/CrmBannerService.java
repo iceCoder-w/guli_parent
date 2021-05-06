@@ -15,5 +15,5 @@ import java.util.List;
  */
 public interface CrmBannerService extends IService<CrmBanner> {
     // 获取首页banner
-    List<CrmBanner> selectIndexList();
+    List<CrmBanner> selectAllList();
 }
