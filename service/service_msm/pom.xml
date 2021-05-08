@@ -29,6 +29,16 @@
             <artifactId>commons-pool2</artifactId>
             <version>2.6.0</version>
         </dependency>
+
+        <!-- 阿里云短信接口 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
