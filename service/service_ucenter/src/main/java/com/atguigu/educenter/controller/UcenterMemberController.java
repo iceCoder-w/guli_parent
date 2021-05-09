@@ -1,13 +1,18 @@
 package com.atguigu.educenter.controller;
 
 
+import com.atguigu.commonutils.JwtUtils;
 import com.atguigu.commonutils.R;
+import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.entity.vo.LoginVo;
 import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.service.UcenterMemberService;
+import com.atguigu.servicebase.exceptionhandler.GuliException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -37,6 +42,20 @@ public class UcenterMemberController {
     public R register(@RequestBody RegisterVo registerVo){
         memberService.register(registerVo);
         return R.ok();
+    }
+
+    @ApiOperation(value = "根据token获取登录信息")
+    @GetMapping("getLoginInfo")
+    public R getLoginInfo(HttpServletRequest request){
+        // 调用jwt方法，根据request对象获取用户信息，返回用户id
+        try {
+            String memberId = JwtUtils.getMemberIdByJwtToken(request);
+            UcenterMember member = memberService.getById(memberId);
+            return R.ok().data("userInfo", member);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new GuliException(20001,"token已失效，请重新登录！");
+        }
     }
 }
 
