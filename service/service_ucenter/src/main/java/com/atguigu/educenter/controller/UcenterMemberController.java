@@ -1,10 +1,12 @@
 package com.atguigu.educenter.controller;
 
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.atguigu.commonutils.R;
+import com.atguigu.educenter.entity.vo.LoginVo;
+import com.atguigu.educenter.service.UcenterMemberService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -19,6 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/educenter/member")
 @CrossOrigin
 public class UcenterMemberController {
+    @Autowired
+    UcenterMemberService memberService;
 
+    @ApiOperation(value = "会员登录")
+    @PostMapping("login")
+    public R login(@RequestBody LoginVo loginVo) {
+        String token = memberService.login(loginVo);
+        return R.ok().data("token", token);
+    }
 }
 
