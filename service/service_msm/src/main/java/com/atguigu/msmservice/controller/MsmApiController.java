@@ -3,6 +3,7 @@ package com.atguigu.msmservice.controller;
 import com.atguigu.commonutils.R;
 import com.atguigu.msmservice.service.MsmService;
 import com.atguigu.msmservice.utils.RandomUtil;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;

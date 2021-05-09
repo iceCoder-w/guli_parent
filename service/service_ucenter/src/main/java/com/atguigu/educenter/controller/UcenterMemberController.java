@@ -3,6 +3,7 @@ package com.atguigu.educenter.controller;
 
 import com.atguigu.commonutils.R;
 import com.atguigu.educenter.entity.vo.LoginVo;
+import com.atguigu.educenter.entity.vo.RegisterVo;
 import com.atguigu.educenter.service.UcenterMemberService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,13 @@ public class UcenterMemberController {
     public R login(@RequestBody LoginVo loginVo) {
         String token = memberService.login(loginVo);
         return R.ok().data("token", token);
+    }
+
+    @ApiOperation(value = "会员注册")
+    @PostMapping("register")
+    public R register(@RequestBody RegisterVo registerVo){
+        memberService.register(registerVo);
+        return R.ok();
     }
 }
 
