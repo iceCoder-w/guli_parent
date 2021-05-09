@@ -22,7 +22,7 @@ public class JwtUtils {
     // 生成token字符串的方法
     public static String getJwtToken(String id, String nickname){
 
-        String JwtToken = Jwts.builder()
+        return Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS256")
                 .setSubject("guli-user")
@@ -35,8 +35,6 @@ public class JwtUtils {
 
                 .signWith(SignatureAlgorithm.HS256, APP_SECRET) // 签名hash
                 .compact();
-
-        return JwtToken;
     }
 
     /**
