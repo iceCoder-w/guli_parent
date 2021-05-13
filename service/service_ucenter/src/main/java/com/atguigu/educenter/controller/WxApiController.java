@@ -1,5 +1,6 @@
 package com.atguigu.educenter.controller;
 
+import com.atguigu.commonutils.JwtUtils;
 import com.atguigu.educenter.entity.UcenterMember;
 import com.atguigu.educenter.service.UcenterMemberService;
 import com.atguigu.educenter.utils.ConstantPropertiesUtil;
@@ -141,6 +142,12 @@ public class WxApiController {
 
         //TODO 登录
 
-        return "redirect:http://localhost:3000";
+        // 使用JWT生成token字符串
+        String token = JwtUtils.getJwtToken(member.getId(), member.getNickname());
+        // 存入cookie
+        //CookieUtils.setCookie(request, response, "guli_jwt_token", token);
+
+        // 因为端口号不同存在跨域问题，cookie不能跨域，所以这里使用url重写
+        return "redirect:http://localhost:3000?token=" + token;
     }
 }
