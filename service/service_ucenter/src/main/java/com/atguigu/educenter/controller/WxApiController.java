@@ -1,6 +1,7 @@
 package com.atguigu.educenter.controller;
 
 import com.atguigu.educenter.utils.ConstantPropertiesUtil;
+import com.atguigu.educenter.utils.HttpClientUtils;
 import com.atguigu.servicebase.exceptionhandler.GuliException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -62,11 +63,28 @@ public class WxApiController {
 
     // 获取扫描人信息，添加数据
     @GetMapping("callback")
-    public String callback(String code, String state, HttpSession session) {
+    public String callback(String code, String state, HttpSession session) throws Exception {
 
         //得到授权临时票据code
         System.out.println("code = " + code);
         System.out.println("state = " + state);
+
+        //向认证服务器发送请求换取 access_token 和 openid
+        String baseAccessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token" +
+                "?appid=%s" +
+                "&secret=%s" +
+                "&code=%s" +
+                "&grant_type=authorization_code";
+
+        String accessTokenUrl = String.format(baseAccessTokenUrl,
+                ConstantPropertiesUtil.WX_OPEN_APP_ID,
+                ConstantPropertiesUtil.WX_OPEN_APP_SECRET,
+                code);
+
+        String accessTokenInfo = HttpClientUtils.get(accessTokenUrl);
+        // 获得 access_token 和 openid
+        System.out.println("accessTokenInfo: "+accessTokenInfo);
+
         return "redirect:http://localhost:3000";
     }
 }
