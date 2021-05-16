@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 服务实现类
@@ -150,5 +152,20 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         // 删除课程本身
         Integer result = baseMapper.deleteById(courseId);
         return null != result && result > 0;
+    }
+
+
+    // 根据讲师id查询讲师所讲课程列表
+    @Override
+    public List<EduCourse> selectByTeacherId(String teacherId) {
+
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<EduCourse>();
+
+        queryWrapper.eq("teacher_id", teacherId);
+        //按照最后更新时间倒序排列
+        queryWrapper.orderByDesc("gmt_modified");
+
+        List<EduCourse> courses = baseMapper.selectList(queryWrapper);
+        return courses;
     }
 }

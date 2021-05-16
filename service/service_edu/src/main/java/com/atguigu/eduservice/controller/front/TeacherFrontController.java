@@ -1,7 +1,9 @@
 package com.atguigu.eduservice.controller.front;
 
 import com.atguigu.commonutils.R;
+import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.EduTeacher;
+import com.atguigu.eduservice.service.EduCourseService;
 import com.atguigu.eduservice.service.EduTeacherService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +26,8 @@ public class TeacherFrontController {
 
     @Autowired
     EduTeacherService teacherService;
+    @Autowired
+    EduCourseService courseService;
 
     // 分页查询讲师
     @ApiOperation(value = "分页讲师列表")
@@ -40,5 +44,21 @@ public class TeacherFrontController {
         Map<String, Object> map = teacherService.pageListWeb(pageParam);
 
         return  R.ok().data(map);
+    }
+
+    // 讲师详情
+    @ApiOperation(value = "根据ID查询讲师")
+    @GetMapping(value = "getTeacherFrontInfo/{id}")
+    public R getById(
+            @ApiParam(name = "id", value = "讲师ID", required = true)
+            @PathVariable String id){
+
+        //查询讲师信息
+        EduTeacher teacher = teacherService.getById(id);
+
+        //根据讲师id查询这个讲师的课程列表
+        List<EduCourse> courseList = courseService.selectByTeacherId(id);
+
+        return R.ok().data("teacher", teacher).data("courseList", courseList);
     }
 }
