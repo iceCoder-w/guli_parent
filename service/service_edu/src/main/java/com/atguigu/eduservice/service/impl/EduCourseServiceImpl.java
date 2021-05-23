@@ -2,6 +2,7 @@ package com.atguigu.eduservice.service.impl;
 
 import com.atguigu.eduservice.entity.EduCourse;
 import com.atguigu.eduservice.entity.EduCourseDescription;
+import com.atguigu.eduservice.entity.frontvo.CourseQueryVo;
 import com.atguigu.eduservice.entity.vo.CourseInfoVo;
 import com.atguigu.eduservice.entity.vo.CoursePublishVo;
 import com.atguigu.eduservice.entity.vo.CourseQuery;
@@ -18,8 +19,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -167,5 +171,51 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         List<EduCourse> courses = baseMapper.selectList(queryWrapper);
         return courses;
+    }
+
+    // 条件查询带分页查询课程（前台）
+    @Override
+    public Map<String, Object> getCourseFrontList(Page<EduCourse> pageCourse, CourseQueryVo courseQuery) {
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(courseQuery.getSubjectParentId())) { // 一级分类
+            queryWrapper.eq("subject_parent_id", courseQuery.getSubjectParentId());
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getSubjectId())) { // 二级分类
+            queryWrapper.eq("subject_id", courseQuery.getSubjectId());
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getBuyCountSort())) { // 关注度
+            queryWrapper.orderByDesc("buy_count");
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getGmtCreateSort())) { // 最新
+            queryWrapper.orderByDesc("gmt_create");
+        }
+
+        if (!StringUtils.isEmpty(courseQuery.getPriceSort())) { // 价格
+            queryWrapper.orderByDesc("price");
+        }
+
+        baseMapper.selectPage(pageCourse, queryWrapper);
+
+        List<EduCourse> records = pageCourse.getRecords();
+        long current = pageCourse.getCurrent();
+        long pages = pageCourse.getPages();
+        long size = pageCourse.getSize();
+        long total = pageCourse.getTotal();
+        boolean hasNext = pageCourse.hasNext();
+        boolean hasPrevious = pageCourse.hasPrevious();
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("items", records);
+        map.put("current", current);
+        map.put("pages", pages);
+        map.put("size", size);
+        map.put("total", total);
+        map.put("hasNext", hasNext);
+        map.put("hasPrevious", hasPrevious);
+
+        return map;
     }
 }
