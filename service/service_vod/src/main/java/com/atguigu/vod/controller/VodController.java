@@ -1,7 +1,13 @@
 package com.atguigu.vod.controller;
 
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthRequest;
+import com.aliyuncs.vod.model.v20170321.GetVideoPlayAuthResponse;
 import com.atguigu.commonutils.R;
+import com.atguigu.servicebase.exceptionhandler.GuliException;
 import com.atguigu.vod.service.VodService;
+import com.atguigu.vod.util.ConstantPropertiesUtil;
+import com.atguigu.vod.util.InitVodClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -50,5 +56,27 @@ public class VodController {
             @RequestParam("videoIdList") List<String> videoIdList){
         vodService.removeVideoList(videoIdList);
         return R.ok().message("视频删除成功");
+    }
+
+    // 根据视频id获得视频的播放凭证
+    @ApiOperation("根据视频id获得视频的播放凭证")
+    @GetMapping("getPlayPath/{id}")
+    public R getPlayPath(
+            @ApiParam(name = "id", value = "云端视频id", required = true)
+            @PathVariable String id) {
+        try {
+            // 创建初始化对象
+            DefaultAcsClient client = InitVodClient.initVodClient(ConstantPropertiesUtil.ACCESS_KEY_ID,
+                    ConstantPropertiesUtil.ACCESS_KEY_SECRET);
+            // 创建获取凭证的request和response对象
+            GetVideoPlayAuthRequest request = new GetVideoPlayAuthRequest();
+            request.setVideoId(id);
+            GetVideoPlayAuthResponse response = client.getAcsResponse(request);
+            // 获得凭证
+            String playAuth = response.getPlayAuth();
+            return R.ok().message("获取凭证成功").data("playAuth", playAuth);
+        } catch (Exception e){
+            throw new GuliException(20001, "获取凭证失败");
+        }
     }
 }
