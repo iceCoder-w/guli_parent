@@ -50,7 +50,7 @@ public class EduReportController {
     //逻辑删除周报
     @ApiOperation(value = "根据ID删除周报")
     @DeleteMapping("removeById/{id}")
-    public R removeTeacher(
+    public R removeReport(
             @ApiParam(name = "id", value = "周报ID", required = true)
             @PathVariable String id){
         boolean flag = reportService.removeById(id);
@@ -61,10 +61,34 @@ public class EduReportController {
         }
     }
 
+    //修改周报信息
+    @ApiOperation(value = "修改讲师信息")
+    @PostMapping("updateReport/{id}")
+    public R updateReport(
+            @ApiParam(name = "id",value = "周报id",required = true)
+            @PathVariable String id,
+
+            @ApiParam(name = "report", value = "周报对象", required = true)
+            @RequestBody EduReport eduReport){
+        eduReport.setId(id);
+        boolean flag = reportService.updateById(eduReport);
+        return flag ? R.ok() : R.error();
+    }
+
+    //根据ID查询周报
+    @ApiOperation(value = "根据ID查询周报")
+    @GetMapping("getReport/{id}")
+    public R getReport(
+            @ApiParam(name = "id",value = "周报id",required = true)
+            @PathVariable String id){
+        EduReport eduReport = reportService.getById(id);
+        return null != eduReport ? R.ok().data("report",eduReport) : R.error().data("msg","该id对应的周报不存在！");
+    }
+
     //条件查询，分页
     @ApiOperation(value = "条件查询，分页")
     @PostMapping("pageReportCondition/{current}/{limit}")
-    public R pageTeacherCondition(
+    public R pageReportCondition(
             @ApiParam(name = "current",value = "当前页",required = true)
             @PathVariable long current,
 
