@@ -106,11 +106,15 @@ public class EduReportController {
 
         //多条件组合查询，动态SQL
         String name = reportQuery.getName();
+        String title = reportQuery.getTitle();
         String begin = reportQuery.getBegin();
         String end = reportQuery.getEnd();
 
         if(!ObjectUtils.isEmpty(name)){
             wrapper.like("user_name",name);
+        }
+        if(!ObjectUtils.isEmpty(title)){
+            wrapper.like("title",title);
         }
         if(!ObjectUtils.isEmpty(begin)){
             wrapper.ge("gmt_create",begin);
