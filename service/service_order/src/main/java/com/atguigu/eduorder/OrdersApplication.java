@@ -13,8 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
  */
 
 @SpringBootApplication
-//@EnableDiscoveryClient // nacos注册
-//@EnableFeignClients // feign服务调用
+@EnableDiscoveryClient // nacos注册，支持远程调用
+@EnableFeignClients // feign实现远程服务调用
 @ComponentScan(basePackages = {"com.atguigu"})
 @MapperScan("com.atguigu.eduorder.mapper")
 public class OrdersApplication {
