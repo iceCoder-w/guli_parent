@@ -28,7 +28,7 @@ import java.util.List;
 @Api(tags = "周报管理")
 @RestController
 @RequestMapping("/eduservice/edu-report")
-@CrossOrigin //解决跨域
+//@CrossOrigin //解决跨域
 public class EduReportController {
     @Autowired
     EduReportService reportService;
