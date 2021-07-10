@@ -17,6 +17,9 @@ public class ReportQuery {
     @ApiModelProperty(value = "用户名称")
     private String name;
 
+    @ApiModelProperty(value = "标题")
+    private String title;
+
     @ApiModelProperty(value = "查询开始时间", example = "2019-01-01 10:10:10")
     private String begin;
 

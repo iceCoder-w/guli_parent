@@ -15,7 +15,7 @@
     </parent>
 
     <groupId>com.atguigu</groupId>
-    <artifactId>guli_parent</artifactId>
+    <artifactId>week_report</artifactId>
 
     <packaging>pom</packaging>
 
